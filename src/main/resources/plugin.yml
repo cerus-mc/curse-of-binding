@@ -1,0 +1,5 @@
+name: CurseOfBinding
+author: Cerus
+main: de.cerus.curseofbinding.CurseOfBindingPlugin
+version: ${project.version}
+api-version: 1.13
