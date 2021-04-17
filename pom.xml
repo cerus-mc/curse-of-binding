@@ -19,14 +19,14 @@
   ~
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.cerus</groupId>
     <artifactId>CurseOfBinding</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
 
     <build>
         <defaultGoal>clean package</defaultGoal>
@@ -76,11 +76,6 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-
-        <repository>
-            <id>cerus</id>
-            <url>https://maven.cerus-dev.de/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -89,13 +84,6 @@
             <artifactId>spigot-api</artifactId>
             <version>1.13.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>de.cerus</groupId>
-            <artifactId>CerusLib</artifactId>
-            <version>1.4.15</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

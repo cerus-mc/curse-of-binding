@@ -20,17 +20,13 @@
 
 package de.cerus.curseofbinding;
 
-import de.cerus.ceruslib.CerusPlugin;
 import de.cerus.curseofbinding.listener.PlayerDeathListener;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class CurseOfBindingPlugin extends CerusPlugin {
-    @Override
-    public void onPluginEnable() {
-        registerAll(new PlayerDeathListener(this));
-    }
+public class CurseOfBindingPlugin extends JavaPlugin {
 
     @Override
-    public void onPluginDisable() {
-
+    public void onEnable() {
+        this.getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
     }
 }

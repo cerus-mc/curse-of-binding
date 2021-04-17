@@ -20,75 +20,84 @@
 
 package de.cerus.curseofbinding.listener;
 
-import de.cerus.ceruslib.listenerframework.CerusListener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+public class PlayerDeathListener implements Listener {
 
-public class PlayerDeathListener extends CerusListener {
-
-    private Map<UUID, Set<ArmorContent>> map = new HashMap<>();
-
-    public PlayerDeathListener(JavaPlugin plugin) {
-        super(plugin);
-    }
+    private final Map<UUID, Set<ArmorContent>> map = new HashMap<>();
 
     @EventHandler
-    public void onDeath(PlayerDeathEvent event) {
-        Player entity = event.getEntity();
-        List<ItemStack> drops = event.getDrops();
-        Set<ArmorContent> contents = new HashSet<>();
+    public void onDeath(final PlayerDeathEvent event) {
+        final Player entity = event.getEntity();
+        final List<ItemStack> drops = event.getDrops();
+        final Set<ArmorContent> contents = new HashSet<>();
 
-        for(int i = 0; i < entity.getInventory().getArmorContents().length; i++) {
-            ItemStack armorContent = entity.getInventory().getArmorContents()[i];
-            if(armorContent == null) continue;
-            if(!armorContent.hasItemMeta()) return;
-            if(!armorContent.getItemMeta().hasEnchant(Enchantment.BINDING_CURSE)) return;
+        for (int i = 0; i < entity.getInventory().getArmorContents().length; i++) {
+            final ItemStack armorContent = entity.getInventory().getArmorContents()[i];
+            if (armorContent == null) {
+                continue;
+            }
+            if (!armorContent.hasItemMeta()) {
+                return;
+            }
+            if (!armorContent.getItemMeta().hasEnchant(Enchantment.BINDING_CURSE)) {
+                return;
+            }
             drops.remove(armorContent);
             contents.add(new ArmorContent(i, armorContent));
         }
 
-        if(contents.isEmpty()) return;
-        map.put(entity.getUniqueId(), contents);
+        if (contents.isEmpty()) {
+            return;
+        }
+        this.map.put(entity.getUniqueId(), contents);
     }
 
     @EventHandler
-    public void onRespawn(PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
-        if(!map.containsKey(player.getUniqueId())) return;
+    public void onRespawn(final PlayerRespawnEvent event) {
+        final Player player = event.getPlayer();
+        if (!this.map.containsKey(player.getUniqueId())) {
+            return;
+        }
 
-        ItemStack[] itemStacks = player.getInventory().getArmorContents();
+        final ItemStack[] itemStacks = player.getInventory().getArmorContents();
 
-        for (ArmorContent armorContent : map.get(player.getUniqueId())) {
+        for (final ArmorContent armorContent : this.map.get(player.getUniqueId())) {
             itemStacks[armorContent.index] = armorContent.itemStack;
         }
         player.getInventory().setArmorContents(itemStacks);
 
-        map.remove(player.getUniqueId());
+        this.map.remove(player.getUniqueId());
     }
 
     private static class ArmorContent {
 
-        private int index;
-        private ItemStack itemStack;
+        private final int index;
+        private final ItemStack itemStack;
 
-        public ArmorContent(int index, ItemStack itemStack) {
+        public ArmorContent(final int index, final ItemStack itemStack) {
             this.index = index;
             this.itemStack = itemStack;
         }
 
         public int getIndex() {
-            return index;
+            return this.index;
         }
 
         public ItemStack getItemStack() {
-            return itemStack;
+            return this.itemStack;
         }
     }
 }
