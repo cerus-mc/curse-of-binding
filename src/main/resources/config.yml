@@ -1,0 +1,3 @@
+# If this is set to true, only players with this permission will keep their curse of binding armor on death
+use-permission: false
+permission: "curseofbinding.keep"

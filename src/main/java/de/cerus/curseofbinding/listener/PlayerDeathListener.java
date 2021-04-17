@@ -20,6 +20,7 @@
 
 package de.cerus.curseofbinding.listener;
 
+import de.cerus.curseofbinding.CurseOfBindingPlugin;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -37,10 +38,19 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerDeathListener implements Listener {
 
     private final Map<UUID, Set<ArmorContent>> map = new HashMap<>();
+    private final CurseOfBindingPlugin plugin;
+
+    public PlayerDeathListener(final CurseOfBindingPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onDeath(final PlayerDeathEvent event) {
         final Player entity = event.getEntity();
+        if (this.plugin.isUsePerm() && !entity.hasPermission(this.plugin.getPerm())) {
+            return;
+        }
+
         final List<ItemStack> drops = event.getDrops();
         final Set<ArmorContent> contents = new HashSet<>();
 

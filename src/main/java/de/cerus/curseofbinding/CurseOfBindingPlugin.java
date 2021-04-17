@@ -25,8 +25,24 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CurseOfBindingPlugin extends JavaPlugin {
 
+    private boolean usePerm;
+    private String perm;
+
     @Override
     public void onEnable() {
-        this.getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        this.saveDefaultConfig();
+        this.usePerm = this.getConfig().getBoolean("use-permission", false);
+        this.perm = this.getConfig().getString("permission", "curseofbinding.keep");
+
+        this.getServer().getPluginManager().registerEvents(new PlayerDeathListener(this), this);
     }
+
+    public boolean isUsePerm() {
+        return this.usePerm;
+    }
+
+    public String getPerm() {
+        return this.perm;
+    }
+
 }
